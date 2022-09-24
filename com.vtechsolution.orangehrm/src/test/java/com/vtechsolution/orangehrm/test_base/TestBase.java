@@ -14,6 +14,10 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.vtechsolution.orangehrm.utility.ExcelDataProvider;
 import com.vtechsolution.orangehrm.utility.configDataProvider;
 import com.vtechsolution.orangehrm.utility.costantVariable;
@@ -26,12 +30,27 @@ public class TestBase {
 
 	public static configDataProvider configDataProvider;
 	public static ExcelDataProvider excelDataProvider;
-
+	public static ExtentSparkReporter reporter;
+	public static  ExtentReports extent;
+	public static ExtentTest extentTest;
 	@BeforeSuite
 	public void init() {
 		// configDataProvider = new configDataProvider();
 		configDataProvider = new configDataProvider(costantVariable.configDataPath);
 		excelDataProvider = new ExcelDataProvider(costantVariable.excelPath);
+		reporter = new ExtentSparkReporter("./reports/extentreport.html");
+
+		reporter.config().setDocumentTitle("Automation Test report");
+		reporter.config().setReportName("RT Test report");
+		reporter.config().setTheme(Theme.STANDARD);
+
+		extent = new ExtentReports();
+		extent.attachReporter(reporter);
+		extent.setSystemInfo("Host", "Local Host");
+		extent.setSystemInfo("OS", "Windows");
+		extent.setSystemInfo("Browser", "Chrome");
+		extent.setSystemInfo("Test Cases", "RT");
+		extent.setSystemInfo("TE", "Kamlesh");
 	}
 
 	@BeforeMethod
@@ -82,7 +101,10 @@ public class TestBase {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
+	@AfterTest
+	public void extentflush() {
+		extent.flush();
+	}
 }
