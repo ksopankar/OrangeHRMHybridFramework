@@ -3,7 +3,6 @@ package com.vtechsolution.orangehrm.test_cases;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.aventstack.extentreports.ExtentTest;
 import com.vtechsolution.orangehrm.page_object.LoginPage;
 import com.vtechsolution.orangehrm.test_base.TestBase;
 
